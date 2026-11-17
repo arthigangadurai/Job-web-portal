@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CareerNest – Job Search &amp; Career Growth</title>
+<style>
+  :root {
+    --navy: #14213d;
+    --ink: #1f2a3c;
+    --muted: #5b6676;
+    --green: #0f6e56;
+    --green-light: #e3f2ed;
+    --teal-dark: #0b3d35;
+    --bg-soft: #f4f8f7;
+    --white: #ffffff;
+    --border: #e2e8e6;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { font-family: var(--sans); color: var(--ink); background: var(--white); line-height: 1.5; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+  h1, h2, h3, h4 { font-family: var(--serif); color: var(--navy); line-height: 1.2; }
+
+  /* Header */
+  .header { display: flex; align-items: center; justify-content: space-between; height: 80px; border-bottom: 1px solid var(--border); background: var(--white); position: sticky; top: 0; z-index: 10; }
+  .logo { display: flex; align-items: center; gap: 8px; font-family: var(--serif); font-weight: 700; color: var(--navy); font-size: 18px; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 8px; background: var(--green); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .nav { display: flex; gap: 4px; margin-left: 24px; }
+  .nav a { padding: 8px 14px; border-radius: 8px; font-size: 14px; color: var(--muted); }
+  .nav a.active { background: var(--green-light); color: var(--green); font-weight: 600; }
+  .header-right { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 8px; font-weight: 600; font-size: 14px; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-outline { background: var(--white); border-color: var(--border); color: var(--navy); }
+  .btn-green { background: var(--green); color: #fff; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: #d9e4df; }
+
+  /* Hero */
+  .hero { padding: 56px 0 48px; text-align: center; background: linear-gradient(180deg, #f1f7f5 0%, #ffffff 100%); }
+  .eyebrow { display: inline-block; font-size: 12px; font-weight: 600; color: var(--green); background: var(--green-light); padding: 6px 14px; border-radius: 999px; letter-spacing: .02em; }
+  .hero h1 { font-size: 56px; margin: 18px auto 14px; max-width: 900px; }
+  .hero h1 span { color: var(--green); }
+  .hero p.sub { color: var(--muted); max-width: 640px; margin: 0 auto; font-size: 16px; }
+  .search-form { margin: 32px auto 0; max-width: 560px; background: var(--white); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 10px 30px rgba(20,33,61,.08); padding: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: center; }
+  .field { display: flex; flex-direction: column; text-align: left; }
+  .field label { font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  .field input { height: 40px; border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; font: inherit; font-size: 14px; color: var(--ink); }
+  .field input:focus { outline: 2px solid var(--green); outline-offset: 0; border-color: transparent; }
+  .search-form .btn { height: 40px; }
+  .form-status { margin-top: 12px; font-size: 14px; min-height: 20px; }
+  .form-status.ok { color: var(--green); }
+  .form-status.err { color: #b42318; }
+  .trending { margin-top: 20px; font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+  .chip { padding: 4px 10px; border-radius: 999px; background: var(--white); border: 1px solid var(--border); font-size: 12px; color: var(--ink); }
+  .cta-row { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+  .trust { margin-top: 36px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .logo-row { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; color: var(--navy); font-weight: 600; font-size: 15px; }
+
+  /* Stats */
+  .stats { padding: 40px 0; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .stat { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .stat-top { display: flex; justify-content: space-between; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .stat-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--green-light); }
+  .stat-num { font-family: var(--serif); font-size: 36px; color: var(--navy); margin-top: 14px; font-weight: 700; }
+  .stat-desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .stats-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 20px; }
+
+  /* Section headers */
+  .section { padding: 56px 0; }
+  .section-soft { background: var(--bg-soft); }
+  .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; gap: 24px; }
+  .kicker { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green); }
+  .section-head h2 { font-size: 36px; margin-top: 6px; }
+  .section-head p { color: var(--muted); margin-top: 6px; font-size: 15px; }
+  .link { color: var(--green); font-weight: 600; font-size: 14px; white-space: nowrap; }
+
+  /* Job cards */
+  .jobs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .job { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .job-wide { grid-column: span 2; }
+  .job-head { display: flex; gap: 14px; align-items: center; }
+  .job-logo { width: 48px; height: 48px; border-radius: 10px; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; flex-shrink: 0; }
+  .job h3 { font-size: 18px; }
+  .job .co { font-size: 13px; color: var(--muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { font-size: 12px; padding: 4px 10px; border-radius: 6px; background: #f1f4f6; color: var(--ink); }
+  .tag.green { background: var(--green-light); color: var(--green); }
+  .salary { font-family: var(--serif); font-size: 20px; color: var(--navy); font-weight: 700; }
+  .salary small { font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 400; }
+  .job-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
+  .btn-apply { height: 34px; padding: 0 16px; font-size: 13px; border-radius: 8px; background: var(--navy); color: #fff; border: none; cursor: pointer; font-family: inherit; font-weight: 600; }
+
+  /* Employers */
+  .emp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .emp { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .emp-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .emp-logo { width: 52px; height: 52px; border-radius: 12px; background: var(--green-light); color: var(--green); display: grid; place-items: center; font-weight: 700; }
+  .verified { font-size: 11px; font-weight: 600; color: var(--green); background: var(--green-light); padding: 4px 8px; border-radius: 999px; }
+  .emp h3 { font-size: 17px; margin-top: 14px; }
+  .emp .desc { font-size: 13px; color: var(--muted); margin-top: 4px; min-height: 36px; }
+  .emp .loc { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .emp-foot { display: flex; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; }
+  .emp-foot strong { color: var(--navy); }
+
+  /* How it works */
+  .how-head { text-align: center; margin-bottom: 36px; }
+  .how-head h2 { font-size: 36px; margin-top: 6px; }
+  .how-head p { color: var(--muted); margin-top: 8px; }
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .path { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px; display: flex; flex-direction: column; }
+  .path-badge { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--green); background: var(--green-light); padding: 5px 12px; border-radius: 999px; }
+  .path h3 { font-size: 26px; margin: 16px 0 20px; }
+  .step { display: flex; gap: 16px; margin-bottom: 18px; }
+  .step-num { width: 40px; height: 40px; border-radius: 10px; background: var(--green); color: #fff; display: grid; place-items: center; font-weight: 700; flex-shrink: 0; }
+  .step-num.dark { background: var(--navy); }
+  .step h4 { font-size: 16px; font-family: var(--sans); font-weight: 700; color: var(--navy); }
+  .step p { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .path .link { margin-top: auto; }
+
+  /* CTA banner */
+  .cta-banner { background: linear-gradient(120deg, var(--navy) 0%, var(--teal-dark) 60%, var(--green) 100%); color: #fff; border-radius: 24px; padding: 64px; position: relative; overflow: hidden; }
+  .cta-banner::after { content: ""; position: absolute; right: -80px; top: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,.06); }
+  .cta-banner .kicker-light { display: inline-block; font-size: 12px; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.12); }
+  .cta-banner h2 { color: #fff; font-size: 44px; margin: 18px 0 14px; max-width: 720px; }
+  .cta-banner p { color: rgba(255,255,255,.8); max-width: 560px; }
+  .cta-banner .cta-row { justify-content: flex-start; }
+  .btn-light { background: #5fd3b1; color: var(--teal-dark); }
+  .btn-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.2); }
+
+  /* Footer */
+  .footer { background: var(--navy); color: rgba(255,255,255,.75); padding: 48px 0 24px; font-size: 13px; }
+  .footer-grid { display: grid; grid-template-columns: 1.6fr repeat(5, 1fr); gap: 32px; }
+  .footer .logo { color: #fff; }
+  .footer h4 { font-family: var(--sans); color: #fff; font-size: 13px; margin-bottom: 12px; }
+  .footer ul { list-style: none; display: grid; gap: 8px; }
+  .footer-bottom { margin-top: 36px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); display: flex; justify-content: space-between; font-size: 12px; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .container { padding: 0 24px; }
+    .nav { display: none; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .jobs-grid { grid-template-columns: repeat(2, 1fr); }
+    .job-wide { grid-column: span 2; }
+    .emp-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .hero h1 { font-size: 38px; }
+    .search-form { grid-template-columns: 1fr; }
+    .stats-grid, .jobs-grid, .emp-grid, .path-grid { grid-template-columns: 1fr; }
+    .job-wide { grid-column: span 1; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .section-head h2, .how-head h2 { font-size: 28px; }
+    .cta-banner { padding: 36px 24px; }
+    .cta-banner h2 { font-size: 30px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .header-right .hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+    <div style="display:flex;align-items:center;">
+      <div class="logo"><span class="logo-mark">C</span>CareerNest</div>
+      <nav class="nav">
+        <a class="active" href="#">Home</a>
+        <a href="#jobs">Browse Jobs</a>
+        <a href="#employers">Companies</a>
+        <a href="#">Salary Guide</a>
+        <a href="#how">About Us</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <a class="hide-sm" href="#">Post a Job</a>
+      <a class="hide-sm" href="#">Sign In</a>
+      <a class="btn btn-primary" href="#signup">Register ▾</a>
+      <div class="avatar"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero + form -->
+  <section class="hero" id="signup">
+    <div class="container">
+      <span class="eyebrow">★ #1 Trusted Tech &amp; Corporate Job Platform</span>
+      <h1>Your Next Opportunity <span>Starts Here.</span></h1>
+      <p class="sub">Discover meaningful careers, connect with verified tech and business employers, and take the definitive next step in your professional journey.</p>
+
+      <form class="search-form" id="signupForm" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="jane@email.com" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+1 555 000 0000" required>
+        </div>
+        <button class="btn btn-primary" type="submit" id="submitBtn">Get Started →</button>
+      </form>
+      <div class="form-status" id="formStatus" role="status"></div>
+
+      <div class="trending">
+        <span>Trending:</span>
+        <span class="chip">Frontend</span>
+        <span class="chip">Python</span>
+        <span class="chip">Product Designer</span>
+        <span class="chip">Data Scientist</span>
+        <span class="chip">Remote</span>
+        <span class="chip">Fintech</span>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-green" href="#jobs">🔍 Explore 10,000+ Jobs</a>
+        <a class="btn btn-outline" href="#how">▦ How It Works</a>
+      </div>
+
+      <p class="trust">Trusted by fast-growing startups &amp; Fortune 500 partners</p>
+      <div class="logo-row">
+        <span>◆ TechNova</span><span>✱ CloudBridge</span><span>◉ PixelCraft</span><span>⬡ NexaSoft</span><span>◈ InsightWorks</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform statistics -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-top"><span>Active Jobs</span><span class="stat-icon"></span></div>
+          <div class="stat-num">10,000+</div>
+          <div class="stat-desc">Live vetted openings across tech, design, &amp; business</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><span>Verified Employers</span><span class="stat-icon"></span></div>
+          <div class="stat-num">2,500+</div>
+          <div class="stat-desc">Enterprise firms &amp; high-velocity scaleups</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><span>Talent Community</span><span class="stat-icon"></span></div>
+          <div class="stat-num">25,000+</div>
+          <div class="stat-desc">Registered professionals building their next era</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top"><span>Placed &amp; Hired</span><span class="stat-icon"></span></div>
+          <div class="stat-num">5,000+</div>
+          <div class="stat-desc">Seamless career placements and signed offers</div>
+        </div>
+      </div>
+      <p class="stats-note">● Data updated in real time, verified monthly</p>
+    </div>
+  </section>
+
+  <!-- Featured jobs -->
+  <section class="section section-soft" id="jobs">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Featured Jobs</div>
+          <h2>Hand-picked opportunities</h2>
+          <p>Head-picked roles from verified employers with guaranteed salary transparency.</p>
+        </div>
+        <a class="link" href="#">View All Jobs →</a>
+      </div>
+
+      <div class="jobs-grid">
+        <article class="job">
+          <div class="job-head">
+            <div class="job-logo">FD</div>
+            <div><h3>Frontend Developer</h3><div class="co">TechNova Solutions</div></div>
+          </div>
+          <div class="tags"><span class="tag">📍 San Francisco, CA (Hybrid)</span><span class="tag">Full-time</span><span class="tag">Mid-Senior Level</span></div>
+          <div class="salary">$120,000 – $145,000 <small>/ yr</small></div>
+          <div class="tags"><span class="tag green">React</span><span class="tag green">TypeScript</span><span class="tag green">Tailwind</span></div>
+          <div class="job-foot"><span>Posted 2d ago</span><button class="btn-apply">Apply Now</button></div>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <div class="job-logo" style="background:var(--green)">PY</div>
+            <div><h3>Python Developer</h3><div class="co">CloudBridge Technologies</div></div>
+          </div>
+          <div class="tags"><span class="tag">📍 Austin, TX (Remote)</span><span class="tag">Full-time</span><span class="tag">Senior Level</span></div>
+          <div class="salary">$130,000 – $160,000 <small>/ yr</small></div>
+          <div class="tags"><span class="tag green">Python</span><span class="tag green">Django</span><span class="tag green">AWS</span><span class="tag green">Docker</span></div>
+          <div class="job-foot"><span>Posted 4h ago</span><button class="btn-apply">Apply Now</button></div>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <div class="job-logo" style="background:#3b5b8a">UX</div>
+            <div><h3>UI/UX Designer</h3><div class="co">PixelCraft Studio</div></div>
+          </div>
+          <div class="tags"><span class="tag">📍 New York, NY (On-site)</span><span class="tag">Full-time</span><span class="tag">Mid Level</span></div>
+          <div class="salary">$85,000 – $125,000 <small>/ yr</small></div>
+          <div class="tags"><span class="tag green">Figma</span><span class="tag green">Design Systems</span><span class="tag green">UX Research</span></div>
+          <div class="job-foot"><span>Posted 1d ago</span><button class="btn-apply">Apply Now</button></div>
+        </article>
+
+        <article class="job job-wide">
+          <div class="job-head">
+            <div class="job-logo" style="background:var(--green)">JV</div>
+            <div><h3>Java Developer</h3><div class="co">NexaSoft Technologies</div></div>
+          </div>
+          <div class="tags"><span class="tag">📍 Chicago, IL (Hybrid)</span><span class="tag">Full-time</span><span class="tag">Senior Level</span></div>
+          <div class="tags"><span class="tag green">Java</span><span class="tag green">Spring Boot</span><span class="tag green">Microservices</span></div>
+          <div class="salary">$115,000 – $140,000 <small>/ yr</small></div>
+          <div class="job-foot"><span>Posted 3d ago</span><button class="btn-apply">Apply Now</button></div>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <div class="job-logo" style="background:#3b5b8a">DA</div>
+            <div><h3>Data Analyst</h3><div class="co">InsightWorks</div></div>
+          </div>
+          <div class="tags"><span class="tag">📍 Boston, MA (Remote)</span><span class="tag">Full-time</span><span class="tag">Entry-Mid Level</span></div>
+          <div class="salary">$85,000 – $110,000 <small>/ yr</small></div>
+          <div class="tags"><span class="tag green">SQL</span><span class="tag green">Python</span><span class="tag green">Tableau</span><span class="tag green">Power BI</span></div>
+          <div class="job-foot"><span>Posted 6h ago</span><button class="btn-apply">Apply Now</button></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top verified employers -->
+  <section class="section" id="employers">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Market Leaders</div>
+          <h2>Top Verified Employers</h2>
+          <p>Explore engineering hubs, design studios, and corporate enterprises actively hiring.</p>
+        </div>
+        <a class="link" href="#">Explore All Companies →</a>
+      </div>
+      <div class="emp-grid">
+        <div class="emp">
+          <div class="emp-top"><div class="emp-logo">◆</div><span class="verified">✔ Verified</span></div>
+          <h3>TechNova Solutions</h3>
+          <div class="desc">Cloud Infrastructure &amp; AI Systems</div>
+          <div class="loc">📍 San Francisco, CA</div>
+          <div class="emp-foot"><strong>18 Open Roles</strong><a class="link" href="#">View Company →</a></div>
+        </div>
+        <div class="emp">
+          <div class="emp-top"><div class="emp-logo">✱</div><span class="verified">✔ Verified</span></div>
+          <h3>CloudBridge Technologies</h3>
+          <div class="desc">Enterprise SaaS &amp; Data Pipeline</div>
+          <div class="loc">📍 Austin, TX</div>
+          <div class="emp-foot"><strong>12 Open Roles</strong><a class="link" href="#">View Company →</a></div>
+        </div>
+        <div class="emp">
+          <div class="emp-top"><div class="emp-logo">◉</div><span class="verified">✔ Verified</span></div>
+          <h3>PixelCraft Studio</h3>
+          <div class="desc">Digital Experience &amp; Brand Design</div>
+          <div class="loc">📍 New York, NY</div>
+          <div class="emp-foot"><strong>8 Open Roles</strong><a class="link" href="#">View Company →</a></div>
+        </div>
+        <div class="emp">
+          <div class="emp-top"><div class="emp-logo">⬡</div><span class="verified">✔ Verified</span></div>
+          <h3>NexaSoft Technologies</h3>
+          <div class="desc">Financial Tech &amp; Cloud Security</div>
+          <div class="loc">📍 Chicago, IL</div>
+          <div class="emp-foot"><strong>15 Open Roles</strong><a class="link" href="#">View Company →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How CareerNest works -->
+  <section class="section section-soft" id="how">
+    <div class="container">
+      <div class="how-head">
+        <div class="kicker">Intelligent Hiring Ecosystem</div>
+        <h2>How CareerNest Works</h2>
+        <p>A synchronized recruitment architecture purpose-built for both candidates and enterprise teams.</p>
+      </div>
+      <div class="path-grid">
+        <div class="path">
+          <span class="path-badge">For Job Seekers</span>
+          <h3>Your Path to Career Acceleration</h3>
+          <div class="step"><div class="step-num">1</div><div><h4>Create Your Profile</h4><p>Highlight your verified technical skills, portfolio artifacts, and career goals.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div><h4>Discover Opportunities</h4><p>Receive tailored AI-matched recommendations and real-time alerts whose relevance matches you.</p></div></div>
+          <div class="step"><div class="step-num dark">3</div><div><h4>Apply and Get Hired</h4><p>Connect directly with hiring managers, track application progress transparently, and sign offers.</p></div></div>
+          <a class="link" href="#">Register as a Job Seeker →</a>
+        </div>
+        <div class="path">
+          <span class="path-badge">For Employers &amp; Recruiters</span>
+          <h3>Modern Talent Acquisition</h3>
+          <div class="step"><div class="step-num">1</div><div><h4>Create Company Profile</h4><p>Showcase your engineering culture, tech stacks, perks, and verified leadership.</p></div></div>
+          <div class="step"><div class="step-num dark">2</div><div><h4>Publish Job Openings</h4><p>Launch targeted listings across specialized engineering and design talent networks.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div><h4>Find the Right Candidate</h4><p>Filter applicants with precision ATS workflows, evaluate scorecards, and make hires faster.</p></div></div>
+          <a class="link" href="#">Explore Employer Solutions →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- High-conversion CTA banner -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <span class="kicker-light">Join Our Community Today — Free Platform Access</span>
+        <h2>Your Next Great Hire or Career Move Is Just a Step Away.</h2>
+        <p>Join over 25,000 professionals accelerating their careers with CareerNest today.</p>
+        <div class="cta-row">
+          <a class="btn btn-light" href="#jobs">🔍 Find a Job</a>
+          <a class="btn btn-ghost" href="#">🏢 Start Hiring Talent</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo"><span class="logo-mark">C</span>CareerNest</div>
+        <p style="margin-top:12px;max-width:240px;">The commanding digital workspace connecting top tier talent with forward-thinking employers worldwide.</p>
+      </div>
+      <div><h4>For Job Seekers</h4><ul><li>Browse Jobs</li><li>Company Reviews</li><li>Salary Estimator</li><li>Resume Optimizer</li><li>Career Advice</li></ul></div>
+      <div><h4>For Employers</h4><ul><li>Post a Job</li><li>Talent Sourcing</li><li>Enterprise Hiring</li><li>Candidate ATS</li><li>Recruitment Pricing</li></ul></div>
+      <div><h4>Platform</h4><ul><li>Job Board APIs</li><li>Integrations</li><li>Mobile App</li><li>Security Standards</li><li>Release Notes</li></ul></div>
+      <div><h4>Resources</h4><ul><li>Help Center</li><li>Hiring Benchmarks</li><li>Industry Reports</li><li>Webinars &amp; Events</li><li>Community Hub</li></ul></div>
+      <div><h4>Legal</h4><ul><li>Privacy Policy</li><li>Terms of Service</li><li>Cookie Preferences</li><li>Equal Opportunity</li><li>Compliance</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CareerNest Inc. All rights reserved.</span>
+      <span>Made with care for the modern workforce.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Apps Script Web App URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVncnPQkVY8RZoA417jc0bOTe3tCKufsvzNacCAtTHGySCqI3HfdldvB9ZMyfVLs5T/exec";
+
+  const form = document.getElementById("signupForm");
+  const statusEl = document.getElementById("formStatus");
+  const submitBtn = document.getElementById("submitBtn");
+
+  let pendingJob = null;
+
+  function showSuccess() {
+    form.reset();
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Get Started →";
+
+    // Return to the top of the home page after registration
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    statusEl.className = "form-status ok";
+    statusEl.textContent = pendingJob
+      ? "Registration complete! Your application for " + pendingJob + " is saved."
+      : "Thanks! Your details have been saved.";
+    pendingJob = null;
+  }
+
+  function showError() {
+    statusEl.className = "form-status err";
+    statusEl.textContent = "Something went wrong. Please try again.";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Get Started →";
+  }
+
+  // Apply Now buttons: take the visitor to the form for that job
+  document.querySelectorAll(".btn-apply").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const jobCard = btn.closest(".job");
+      const title = jobCard ? jobCard.querySelector("h3").textContent : "this job";
+      pendingJob = title;
+      document.getElementById("signup").scrollIntoView({ behavior: "smooth" });
+      statusEl.className = "form-status ok";
+      statusEl.textContent = "Complete registration below to apply for " + title + ".";
+      setTimeout(function () { document.getElementById("name").focus(); }, 600);
+    });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    if (!name || !email || !phone) {
+      statusEl.className = "form-status err";
+      statusEl.textContent = "Please fill in name, email, and phone.";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Saving…";
+    statusEl.textContent = "";
+
+    const job = pendingJob || "General Registration";
+    const url = SCRIPT_URL + "?" + new URLSearchParams({ name, email, phone, job });
+
+    fetch(url, { method: "GET", mode: "no-cors" })
+      .then(() => showSuccess())
+      .catch(() => showError());
+  });
+</script>
+</body>
+</html>
